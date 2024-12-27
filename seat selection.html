@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seat Selection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+        }
+        header {
+            background: #333;
+            color: #fff;
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+        header h1 {
+            margin: 0;
+        }
+        .seat-selection {
+            margin: 20px 0;
+        }
+        .seat {
+            width: 30px;
+            height: 30px;
+            background-color: #444;
+            margin: 3px;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .seat.selected {
+            background-color: #0779e4;
+        }
+        .seat.booked {
+            background-color: #fff;
+            cursor: not-allowed;
+        }
+        .billing, .payment {
+            margin: 20px 0;
+        }
+        .button-container {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Seat Selection</h1>
+        </div>
+    </header>
+    <div class="container">
+        <div class="seat-selection">
+            <h2>Select Your Seats</h2>
+            <div id="seats" style="text-align: center;">
+                <!-- Seats will be dynamically added here -->
+            </div>
+        </div>
+        <div class="billing">
+            <h2>Billing</h2>
+            <p>Total Seats: <span id="count">0</span></p>
+            <p>Total Price: ₹<span id="total">0</span></p>
+        </div>
+        <div class="button-container">
+            <a href="file:///C:/Users/Dushyanth.T/Documents/HTML%20codes/payment.html"><button id="proceedToPayment">Proceed to Payment</button></a>
+        </div>
+    </div>
+    <script>
+        const seats = document.getElementById('seats');
+        const count = document.getElementById('count');
+        const total = document.getElementById('total');
+        const proceedToPayment = document.getElementById('proceedToPayment');
+
+        const ticketPrice = 150; // Ticket price in INR
+
+        function createSeats(rows, cols) {
+            for (let i = 0; i < rows; i++) {
+                const row = document.createElement('div');
+                row.style.display = 'flex';
+                row.style.justifyContent = 'center';
+                for (let j = 0; j < cols; j++) {
+                    const seat = document.createElement('div');
+                    seat.classList.add('seat');
+                    seat.addEventListener('click', () => {
+                        if (!seat.classList.contains('booked')) {
+                            seat.classList.toggle('selected');
+                            updateBilling();
+                        }
+                    });
+                    row.appendChild(seat);
+                }
+                seats.appendChild(row);
+            }
+        }
+
+        function updateBilling() {
+            const selectedSeats = document.querySelectorAll('.seat.selected');
+            const selectedSeatsCount = selectedSeats.length;
+
+            count.innerText = selectedSeatsCount;
+            total.innerText = selectedSeatsCount * ticketPrice;
+        }
+
+        proceedToPayment.addEventListener('click', () => {
+            const selectedSeats = document.querySelectorAll('.seat.selected');
+            const selectedSeatsCount = selectedSeats.length;
+            const totalAmount = selectedSeatsCount * ticketPrice;
+            window.location.href = payment.html?seats=${selectedSeatsCount}&amount=${totalAmount};
+        });
+
+        createSeats(5, 8); // Create a grid of 5 rows and 8 columns
+    </script>
+</body>
+</html>
